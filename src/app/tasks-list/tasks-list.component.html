@@ -1,0 +1,62 @@
+<ngx-spinner></ngx-spinner>
+<ng-container *ngIf="tasksList && tasksList.length > 0 ">
+
+  <div class="row">
+    <div class="col-lg-1 col-sm-3"><label for="">Task:</label></div>
+    <div class="col-lg-5 col-sm-3"><input type="text" [(ngModel)]="searchTask" class="form-control"></div>
+    <div class="col-lg-1 col-sm-3"><label for="">Parent Task:</label></div>
+    <div class="col-lg-5 col-sm-3"><input type="text" [(ngModel)]="searchParentTask" class="form-control"></div>
+  </div>
+  <div class="row">
+
+    <div class="" style="padding-left:15px;"><label for="">Priority From:</label></div>
+    <div class="col-lg-1 col-sm-3" ><input  style="width:100px;" type="text" [(ngModel)]="startPriority" class="form-control"></div>
+    <div class=""><label for="" style="margin-left:60px;">Priority To:</label></div>
+    <div class="col-lg-1 col-sm-3" ><input  style="width:100px;" value="" type="text" [(ngModel)]="endPriority" class="form-control"></div>
+
+    <div class="col-lg-1 col-sm-3" style="margin-left:50px;"><label for="">Start:</label></div>
+    <div class="col-lg-2 col-sm-3"><input type="text" [(ngModel)]="startDate" class="form-control"></div>
+    <div class="col-lg-1 col-sm-3"><label for="">End:</label></div>
+    <div class="col-lg-2 col-sm-3"><input type="text" [(ngModel)]="endDate" class="form-control"></div>
+
+  </div>
+  <hr style="border-bottom: 1px dotted grey" />
+  <p></p>
+  <table id="dtBasicExample" class="table task-list">
+    <thead class="">
+      <th>Task</th>
+      <th>Parent</th>
+      <th>Priority</th>
+      <th>Start</th>
+      <th>End</th>
+      <th></th>
+      <th></th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of tasksList  | grdFilter: {task: searchTask} 
+          | grdFilter: {parentTask: searchParentTask} 
+          | priorityFilter : startPriority : endPriority
+          | paginate: { itemsPerPage: 5, currentPage: p }">
+        <td class="task-name">{{ task.task }}</td>
+        <td class="task-name">{{ task.parentTask}}</td>
+        <td>{{ task.priority }}</td>
+        <td>{{ task.startDate | date: 'MM/dd/yyyy'}}</td>
+        <td>{{ task.endDate | date: 'MM/dd/yyyy' }}</td>
+        <td>
+          <input type="button" class="form-button btn-medium" value="Edit" />
+        </td>
+        <td>
+          <input type="button" class="form-button btn-medium" value="End Task" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+</ng-container>
+
+<ng-container *ngIf="!tasksList || tasksList.length == 0 ">
+  <div class="row">
+    <h3 class="text-danger">No records are available.</h3>
+  </div>
+</ng-container>
