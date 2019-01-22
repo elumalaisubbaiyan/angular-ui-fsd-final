@@ -6,19 +6,22 @@ This is a UI project done as part of the FSD Final assessment.
 
 The project consists of the below functionalities
 
+## Application Overview
  <b>Task Management application includes the below feature</b>
  <ul>
-  <li> Add a new task</li>
-  <li> Edit a task <li>
-  <li>End Task<li>
-  </ul>
+  <li>Add a new task</li>
+  <li>Edit a task </li>
+  <li>End Task</li>
+  <li>View All Task</li>
 </ul>
 
-<b>It is a single page application (SPA) and uses the below dependencies</b>
+## Angular Modules used
+<b>It is a single page application (SPA) and uses the below major features from angular framework </b>
  - Angular client
  - Angular Reactive Forms
  - Angular Routing Module
  - Angular HttpModule/HttpClient for integration with Restful services
+ - Angular Pipes to implement Angular auto Filter
  - Proxy configuration for connecting to services
  - NgxPagination for pagination
  - NgxSpinner for spinner
