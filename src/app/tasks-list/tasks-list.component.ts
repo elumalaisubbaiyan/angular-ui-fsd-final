@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Task } from '../task';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TasksApiService } from '../tasks-api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -17,7 +17,11 @@ export class TasksListComponent implements OnInit {
 
   tasksList: Task[] = [];
 
-  constructor(private taskService: TasksApiService, private router: Router, private spinner: NgxSpinnerService) { }
+  constructor(
+    private taskService: TasksApiService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.spinner.show();
@@ -33,12 +37,26 @@ export class TasksListComponent implements OnInit {
     );
   }
 
-  onEdit(task) {
-    this.router.navigate(['/tasks', task.taskId]);
+  onEdit(task: Task) {
+    this.router.navigate(['/edit-task', task.taskId]);
   }
 
-  onEndTask(task) {
+  onEnd(task: Task) {
+    this.spinner.show();
     //TODO: Make a update service call for the status update
+    task.status = 'Closed';
+    console.log("task " + JSON.stringify(task));
+    this.taskService.updateTask(task.taskId, task).subscribe(
+      (data) => {
+        this.spinner.hide();
+        window.location.reload();
+      },
+      err => {
+        console.error("Error occured when updating status " + err);
+        this.spinner.hide();
+      });
+    this.taskService.updateTask(task.taskId, task);
+
   }
 
 }

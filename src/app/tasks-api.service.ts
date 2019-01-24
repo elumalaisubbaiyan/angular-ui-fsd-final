@@ -23,7 +23,7 @@ export class TasksApiService {
   }
 
   getTaskById(id: number): Observable<Task> {
-    const getByIdUrl = `${apiUrl} / ${id}`;
+    const getByIdUrl = `${apiUrl}/${id}`;
     return this.http.get<Task>(getByIdUrl);
   }
 
@@ -46,12 +46,12 @@ export class TasksApiService {
   }
 
   updateTask(id: number, task: Task): Observable<Task> {
-    const putByIdUrl = `${apiUrl} / ${id}`;
+    const putByIdUrl = `${apiUrl}/${id}`;
     return this.http.put<Task>(putByIdUrl, task, httpOptions);
   }
 
   deleteTask(id: number): Observable<Task> {
-    const deleteByIdUrl = `${apiUrl} / ${id}`;
+    const deleteByIdUrl = `${apiUrl}/${id}`;
     return this.http.delete<Task>(deleteByIdUrl);
   }
 

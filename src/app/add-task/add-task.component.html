@@ -1,61 +1,89 @@
 <ngx-spinner></ngx-spinner>
-<ng-container *ngIf="addTaskError">
-  <div class="alert alert-danger">{{addTaskError}}</div>
-</ng-container>
-<form [formGroup]="taskForm">
-  <div class="row">
-    <div class="col-lg-2 col-sm-6"><label for="">Task:</label></div>
-    <div class="col-lg-4 col-sm-6"><input type="text" class="form-control" formControlName="task"></div>
+<div *ngIf="!loaded">Data loading. Please wait</div>
+<div *ngIf="loaded">
+  <div *ngIf="editMode">
+    <h4 class="text-success">Update Task Details</h4>
+    <hr />
   </div>
 
-
-  <div class="row">
-    <div class="col-lg-2 col-sm-6"><label for="">Priority:</label></div>
-    <div class="col-lg-4 col-sm-6"><input type="range" min=0 max=30 class="slider" id="priorityInput" oninput="priorityOuput.value = priorityInput.value"
-        formControlName="priority" />
-      <b> Selected Priority: <output name="priorityOuput" id="priorityOuput">
-          0
-        </output></b>
+  <div *ngIf="viewMode">
+      <h4 class="text-success">View Task Details</h4>
+      <hr/>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-lg-2 col-sm-6"><label for="">Parent Task:</label></div>
-    <div class="col-lg-4 col-sm-6">
-      <ng-container *ngIf="tasksList && tasksList.length > 0">
-      <select formControlName="parentTask" class="form-control">
-        <option value="0">No Parent Task</option>
-        <option value="-1">Use the New Task as Parent Task</option>
-        <option *ngFor="let task of tasksList" value="task.taskId">{{task.taskId}} - {{task.task}}</option>
-      </select>
-      </ng-container>
+  <ng-container *ngIf="addTaskError">
+    <div class="alert alert-danger">{{addTaskError}}</div>
+  </ng-container>
 
+  <form [formGroup]="taskForm">
 
-      <!-- <input type="text" class="form-control" maxlength="8" size="4" formControlName="parentTask">-->
+    <div class="row">
+      <input type="hidden" class="form-control" formControlName="taskId">
     </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-2 col-sm-6"><label for="">Start Date:</label></div>
-    <div class="col-lg-4 col-sm-6"><input type="date" class="form-control" formControlName="startDate"></div>
-  </div>
-  <div class="row">
-    <div class="col-lg-2 col-sm-6"><label for="">End Date:</label></div>
-    <div class="col-lg-4 col-sm-6"><input type="date" class="form-control" formControlName="endDate"></div>
-  </div>
-
-  <div class="row">
-    <div class="col-lg-2 col-sm-6"></div>
-    <div class="col-lg-4 col-sm-6">
-      <input type="submit" value="Add Task" class="form-button" (click)="onSubmit()"> &nbsp;
-      &nbsp; <button class="form-button" (click)="clearFields()">Reset</button>
+    <div class="row">
+      <div class="col-lg-2 col-sm-6"><label for="">Task:</label></div>
+      <div class="col-lg-4 col-sm-6"><input type="text" class="form-control" formControlName="task"></div>
     </div>
-  </div>
 
-  <!--
+
+    <div class="row">
+      <div class="col-lg-2 col-sm-6"><label for="">Priority:</label></div>
+      <div class="col-lg-4 col-sm-6"><input type="range" min=0 max=30 class="slider" id="priorityInput" oninput="priorityOuput.value = priorityInput.value"
+          formControlName="priority" />
+        <b> Selected Priority: <output name="priorityOuput" id="priorityOuput">
+            {{priority}}
+          </output></b>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-2 col-sm-6"><label for="">Parent Task:</label></div>
+      <div class="col-lg-4 col-sm-6">
+        <ng-container *ngIf="tasksList && tasksList.length > 0">
+          <select formControlName="parentTask" class="form-control">
+            <option value="0">No Parent Task</option>
+            <option value="-1">Use the New Task as Parent Task</option>
+            <option *ngFor="let task of tasksList" [selected]="task.taskId === parentTask" [value]="task.taskId">{{taskForm.parentTask}}
+              {{task.taskId}} - {{task.task}}</option>
+          </select>
+        </ng-container>
+
+
+        <!-- <input type="text" class="form-control" maxlength="8" size="4" formControlName="parentTask">-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2 col-sm-6"><label for="">Start Date:</label></div>
+      <div class="col-lg-4 col-sm-6"><input type="date" class="form-control" formControlName="startDate"></div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2 col-sm-6"><label for="">End Date:</label></div>
+      <div class="col-lg-4 col-sm-6"><input type="date" class="form-control" formControlName="endDate"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-2 col-sm-6"></div>
+      <div class="col-lg-4 col-sm-6">
+        <ng-container *ngIf="!editMode && !viewMode">
+          <input type="submit" value="Add Task" class="form-button" (click)="onSubmit()"> &nbsp;
+          &nbsp; <button class="form-button" (click)="clearFields()">Reset</button>
+        </ng-container>
+        <ng-container *ngIf="viewMode">
+            &nbsp; <button class="form-button" (click)="onCancel()">Go Back</button>
+          </ng-container>
+        <ng-container *ngIf="editMode">
+          <input type="submit" value="Update" class="form-button" (click)="onSubmit()"> &nbsp;
+          &nbsp; <button class="form-button" (click)="onCancel()">Cancel</button>
+        </ng-container>
+      </div>
+    </div>
+
+    <!--
   <div class="form-group">
     <label for="" class="text-danger">Body (Below section will be updated on Add Task button click based on the Add
       Task service Response)</label>
     <textarea class="form-control bg-secondary text-white" cols=50 rows=6 value="{{addTaskResponse}}" disabled="disabled"></textarea>
   </div>
   -->
-</form>
+  </form>
+</div>

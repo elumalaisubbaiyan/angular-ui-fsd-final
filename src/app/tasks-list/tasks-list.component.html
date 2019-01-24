@@ -10,9 +10,9 @@
   <div class="row">
 
     <div class="" style="padding-left:15px;"><label for="">Priority From:</label></div>
-    <div class="col-lg-1 col-sm-3" ><input  style="width:100px;" type="text" [(ngModel)]="startPriority" class="form-control"></div>
+    <div class="col-lg-1 col-sm-3"><input style="width:100px;" type="text" [(ngModel)]="startPriority" class="form-control"></div>
     <div class=""><label for="" style="margin-left:60px;">Priority To:</label></div>
-    <div class="col-lg-1 col-sm-3" ><input  style="width:100px;" value="" type="text" [(ngModel)]="endPriority" class="form-control"></div>
+    <div class="col-lg-1 col-sm-3"><input style="width:100px;" value="" type="text" [(ngModel)]="endPriority" class="form-control"></div>
 
     <div class="col-lg-1 col-sm-3" style="margin-left:50px;"><label for="">Start:</label></div>
     <div class="col-lg-2 col-sm-3"><input type="text" [(ngModel)]="startDate" class="form-control"></div>
@@ -43,10 +43,13 @@
         <td>{{ task.startDate | date: 'MM/dd/yyyy'}}</td>
         <td>{{ task.endDate | date: 'MM/dd/yyyy' }}</td>
         <td>
-          <input type="button" class="form-button btn-medium" value="Edit" />
+          <input type="button" class="form-button btn-medium" (click)="onEdit(task)" [value]="task.status === 'Closed' ? 'View' : 'Edit'" />
         </td>
         <td>
-          <input type="button" class="form-button btn-medium" value="End Task" />
+          <input *ngIf="task.status !== 'Closed'" type="button" class="form-button btn-medium" (click)="onEnd(task)"
+            value="End Task" />
+          <input *ngIf="task.status === 'Closed'" type="button" class="form-button btn-medium" disabled="disabled"
+            value="Task Ended" />
         </td>
       </tr>
     </tbody>
