@@ -1,8 +1,18 @@
 <ngx-spinner></ngx-spinner>
+
+<div *ngIf="editMode">
+  <h4 class="text-success">Update Task</h4>
+  <br />
+
+</div>
+
 <ng-container *ngIf="addTaskError">
   <div class="alert alert-danger">{{addTaskError}}</div>
 </ng-container>
 <form [formGroup]="taskForm">
+  <div class="row">
+    <input type="hidden" class="form-control" formControlName="taskId">
+  </div>
   <div class="row">
     <div class="col-lg-2 col-sm-6"><label for="">Task:</label></div>
     <div class="col-lg-4 col-sm-6"><input type="text" class="form-control" formControlName="task"></div>
@@ -14,20 +24,21 @@
     <div class="col-lg-4 col-sm-6"><input type="range" min=0 max=30 class="slider" id="priorityInput" oninput="priorityOuput.value = priorityInput.value"
         formControlName="priority" />
       <b> Selected Priority: <output name="priorityOuput" id="priorityOuput">
-          0
+          {{priority}}
         </output></b>
-    </div>
+    </div> 
   </div>
 
   <div class="row">
     <div class="col-lg-2 col-sm-6"><label for="">Parent Task:</label></div>
     <div class="col-lg-4 col-sm-6">
       <ng-container *ngIf="tasksList && tasksList.length > 0">
-      <select formControlName="parentTask" class="form-control">
-        <option value="0">No Parent Task</option>
-        <option value="-1">Use the New Task as Parent Task</option>
-        <option *ngFor="let task of tasksList" value="task.taskId">{{task.taskId}} - {{task.task}}</option>
-      </select>
+        <select formControlName="parentTask" class="form-control" >
+          <option value="0">No Parent Task</option>
+          <option value="-1">Use the New Task as Parent Task</option>
+          <option *ngFor="let task of tasksList" [selected]="task.taskId === parentTask" [value]="task.taskId">{{taskForm.parentTask}}
+            {{task.taskId}} - {{task.task}}</option>
+        </select>
       </ng-container>
 
 
@@ -46,8 +57,14 @@
   <div class="row">
     <div class="col-lg-2 col-sm-6"></div>
     <div class="col-lg-4 col-sm-6">
-      <input type="submit" value="Add Task" class="form-button" (click)="onSubmit()"> &nbsp;
-      &nbsp; <button class="form-button" (click)="clearFields()">Reset</button>
+      <ng-container *ngIf="!editMode">
+        <input type="submit" value="Add Task" class="form-button" (click)="onSubmit()"> &nbsp;
+        &nbsp; <button class="form-button" (click)="clearFields()">Reset</button>
+      </ng-container>
+      <ng-container *ngIf="editMode">
+        <input type="submit" value="Update" class="form-button" (click)="onSubmit()"> &nbsp;
+        &nbsp; <button class="form-button" (click)="onCancel()">Cancel</button>
+      </ng-container>
     </div>
   </div>
 
