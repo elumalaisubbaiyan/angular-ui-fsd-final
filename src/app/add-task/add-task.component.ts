@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 
@@ -15,7 +15,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 export class AddTaskComponent implements OnInit {
 
-  taskForm: FormGroup;
+  taskForm;
+  loaded;
   addTaskResponse;
   addTaskError;
   tasksList;
@@ -37,7 +38,8 @@ export class AddTaskComponent implements OnInit {
     this.addTaskError = '';
   }
 
-  constructor(private fb: FormBuilder,
+  constructor(private cd: ChangeDetectorRef,
+    private fb: FormBuilder,
     private taskService: TasksApiService,
     private route: ActivatedRoute,
     private router: Router,
@@ -46,7 +48,7 @@ export class AddTaskComponent implements OnInit {
   ngOnInit() {
     this.spinner.show();
     const id = + this.route.snapshot.paramMap.get('taskId');
-
+    this.clearFields();
     this.populateParentTaskList();
     if (id && id !== 0) {
       this.taskService.getTaskById(id).subscribe(
@@ -58,15 +60,21 @@ export class AddTaskComponent implements OnInit {
     }
   }
 
+  public ngViewAfterInit() {
+    this.cd.detectChanges();
+  }
+
   populateParentTaskList() {
     this.taskService.getAllTasks().subscribe(
       data => {
         this.tasksList = data;
         this.spinner.hide();
+        this.loaded = true;
       },
       err => {
         console.error(`Error occured while getting tasks data ${err}`);
         this.spinner.hide();
+        this.loaded = true;
       }
     );
   }
@@ -77,19 +85,20 @@ export class AddTaskComponent implements OnInit {
     } else {
       this.editMode = true;
     }
-    let fieldDisabled = false;
 
     this.taskForm = this.fb.group({
       taskId: [data.taskId],
-      parentTask: new FormControl({value: data.parentTaskId, disabled: true}, Validators.required),
-      task: new FormControl({ value: data.task, disabled: true }, Validators.required),
+      parentTask: [data.parentTaskId, [Validators.required]],
+      task: [data.task, [Validators.required]],
       priority: [data.priority, Validators.min(1)],
-      startDate: new FormControl({ value: data.startDate, disabled: true }, Validators.required),
-      endDate: new FormControl({ value: data.endDate, disabled: true }, Validators.required),
+      startDate: [data.startDate, [Validators.required]],
+      endDate: [data.endDate, [Validators.required]],
     });
     this.priority = data.priority;
-    if(this.viewMode) {
+    if (this.viewMode) {
+      this.cd.detectChanges();
       this.taskForm.disable();
+      this.cd.detectChanges();
     }
   }
 
