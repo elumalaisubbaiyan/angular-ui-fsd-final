@@ -1,0 +1,99 @@
+<ngx-spinner></ngx-spinner>
+<div class="container">
+  <br />
+  <div *ngIf="!loaded">Data loading. Please wait</div>
+  <div *ngIf="loaded">
+    <div *ngIf="editMode">
+      <h4 class="text-success">Update User Details</h4>
+      <hr />
+    </div>
+
+    <div *ngIf="viewMode">
+      <h4 class="text-success">View User Details</h4>
+      <hr />
+    </div>
+
+    <ng-container *ngIf="serviceError">
+      <div class="alert alert-danger">{{serviceError}}</div>
+    </ng-container>
+
+    <form [formGroup]="userForm">
+      <div class="row">
+        <input type="hidden" class="form-control" formControlName="userId">
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-2"><label for="">First Name:</label></div>
+        <div class="col-sm-6 col-md-8 col-lg-5"><input type="text" class="form-control" formControlName="firstName"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-2"><label for="">Last Name:</label></div>
+        <div class="col-sm-6 col-md-8 col-lg-5"><input type="text" class="form-control" formControlName="lastName"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-md-4 col-lg-2"><label for="">Employee ID:</label></div>
+        <div class="col-sm-6 col-md-8 col-lg-2 col-lg-2-text"><input type="text" class="form-control" formControlName="employeeId"></div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-9 col-md-6 col-lg-3"></div>
+        <div class="col-sm-3 col-md-6 col-lg-5">
+          <ng-container *ngIf="!editMode && !viewMode">
+            <input type="submit" value="Add" class="form-button user-form-button" (click)="onSubmit()"> &nbsp;
+            &nbsp; <button class="form-button user-form-button" (click)="clearFields()">Reset</button>
+          </ng-container>
+          <ng-container *ngIf="editMode">
+            <input type="submit" value="Update" class="form-button user-form-button" (click)="onSubmit()"> &nbsp;
+            &nbsp; <button class="form-button user-form-button" (click)="clearFields()">Cancel</button>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+    <hr class="detail-seperator" />
+
+    <ng-container *ngIf="usersList && usersList.length > 0 ">
+      <div class="row form-group">
+        <div class="col-lg-3 col-sm-3"><input type="text" [(ngModel)]="searchText" placeholder="Search" class="form-control"></div>
+        <label for="sort" class="col-sm-1 col-lg-1 control-label"> Sort : </label>
+        <div class="col-lg-3 col-sm-3">
+          <select [(ngModel)]="sortBy" class="form-control">
+            <option value="firstName">First Name</option>
+            <option value="lastName">Last Name</option>
+            <option value="employeeId">Employee ID</option>
+          </select>
+        </div>
+
+      </div>
+      <div *ngFor="let user of usersList  
+            | grdFilter:  {lastName: searchText, firstName: searchText, employeeId: searchText} 
+    | sort: sortBy">
+        <hr class="detail-seperator dotted-line" />
+        <div class="row">
+          <div class="col-sm-6 col-md-8 col-lg-5">
+            <input type="text" disabled="disabled" class="form-control" value={{user.firstName}}>
+          </div>
+          <input type="button" class="user-form-button" (click)="onEdit(user)" value="Edit" />
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6 col-md-8 col-lg-5">
+            <input type="text" class="form-control" disabled="disabled" value={{user.lastName}}>
+          </div>
+          <input type="button" class="user-form-button" (click)="onDelete(user)" value="Delete" />
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6 col-md-8 col-lg-5">
+            <input type="text" class="form-control" disabled="disabled" value={{user.employeeId}}>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="
+        !usersList || usersList.length <=0 ">
+      <h4 class=" text-danger">No users available </h4>
+    </ng-container>
+  </div>
+</div>

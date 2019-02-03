@@ -9,10 +9,12 @@ import { AppComponent } from './app.component';
 import { TasksListComponent } from './tasks-list/tasks-list.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 
-import { GrdFilterPipe } from './grd-filter.pipe';
-import { PriorityFilterPipe } from './priority-filter.pipe';
-import { EditTaskComponent } from './edit-task/edit-task.component';
+import { PriorityFilterPipe } from './pipes/priority-filter.pipe';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { UsersComponent } from './users/users.component';
+import { GrdFilterPipe } from './pipes/grd-filter.pipe';
+import { TextFilterPipe } from './pipes/text-filter.pipe';
+import { ArraySortPipe } from './pipes/array-sort.pipe';
 
 @NgModule({
   declarations: [
@@ -21,7 +23,9 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AddTaskComponent,
     GrdFilterPipe,
     PriorityFilterPipe,
-    EditTaskComponent
+    UsersComponent,
+    TextFilterPipe,
+    ArraySortPipe
   ],
   imports: [
     HttpClientModule,

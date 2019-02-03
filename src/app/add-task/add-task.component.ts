@@ -113,7 +113,6 @@ export class AddTaskComponent implements OnInit {
       alert("Successfully added new task");
     } else {
       alert("Successfully updated task");
-      //this.router.navigate(['/edit-task', this.taskForm.value.taskId]);
     }
   }
 
@@ -146,7 +145,7 @@ export class AddTaskComponent implements OnInit {
           (data) => {
             this.prettyPrint(JSON.stringify(data));
             this.addTaskError = '';
-            this.router.navigate(['/edit-task', taskObj.taskId]);
+            this.router.navigate(['/task', taskObj.taskId]);
             this.spinner.hide();
           },
           err => {

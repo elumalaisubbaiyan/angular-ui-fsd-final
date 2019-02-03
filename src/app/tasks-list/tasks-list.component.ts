@@ -38,7 +38,7 @@ export class TasksListComponent implements OnInit {
   }
 
   onEdit(task: Task) {
-    this.router.navigate(['/edit-task', task.taskId]);
+    this.router.navigate(['/task', task.taskId]);
   }
 
   onEnd(task: Task) {
