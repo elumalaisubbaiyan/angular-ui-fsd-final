@@ -1,0 +1,45 @@
+<ngx-spinner></ngx-spinner>
+<div class="modal-header">
+  <h4 class="modal-title">Users List</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">X
+  </button>
+</div>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-lg-5 col-sm-3"><input type="text" [(ngModel)]="searchText" placeholder="Search User" class="form-control"></div>
+  </div>
+</div>
+<form [formGroup]="userLookupForm" (ngSubmit)="submitForm()">
+
+  <hr class="detail-seperator dotted-line" />
+  <div class="container-fluid">
+    <ng-container *ngIf="usersList && usersList.length > 0 ">
+      <table class="table-bordered">
+        <thead class="bg-light">
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Employee ID</th>
+          <th>Select</th>
+        </thead>
+        <tr *ngFor="let user of usersList  
+        | grdFilter:  {lastName: searchText, firstName: searchText, employeeId: searchText} 
+| sort: sortBy">
+          <td>{{user.firstName}}</td>
+          <td>{{user.lastName}}</td>
+          <td>{{user.employeeId}}</td>
+          <td><input type="radio" name="user" (change)="onchange(user)"></td>
+        </tr>
+      </table>
+    </ng-container>
+    <ng-container *ngIf="!usersList || usersList.length === 0 ">
+      <h3 class="text-danger">No users are available.</h3>
+    </ng-container>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-primary" [disabled]="!selectedUser || !selectedUser.userId">
+      Done
+    </button>
+
+  </div>
+</form>

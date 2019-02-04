@@ -1,0 +1,57 @@
+.set-date-label {
+    max-width: 30%;
+}
+
+input[type="date"]:before {
+    content: attr(placeHolder) !important;
+    color: #aaa;
+    margin-right: 0.5em;
+    font-size: 16px;
+}
+
+input[type="date"]:focus:before, input[type="date"]:valid:before {
+    content: "";
+    font-size: 16px;
+}
+
+.bg-secondary {
+    background-color: #eee !important;
+}
+
+.small-table {
+    width: 60%;
+}
+
+.add-border-spacing {
+    border-left: 8px solid white;
+    border-right: 8px solid white;
+    margin-right: 20px;
+}
+
+.project-form-button {
+    width: 130px;
+    color: black;
+    border: 1px solid black;
+    height: 48px;
+}
+
+.detail-seperator {
+    text-align: left;
+    margin-left: 0;
+    border-bottom: 3px rgba(0, 51, 141) solid;
+    width: 60%;
+}
+
+.dotted-line {
+    border-bottom: 2px dotted rgba(0, 51, 141);
+}
+
+.col-lg-2-text {
+    min-width: 20% !important;
+}
+
+@media only screen and (max-width: 720px) {
+    .detail-seperator {
+        width: 100%;
+    }
+}

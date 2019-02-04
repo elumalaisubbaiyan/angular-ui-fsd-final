@@ -8,11 +8,6 @@
       <hr />
     </div>
 
-    <div *ngIf="viewMode">
-      <h4 class="text-success">View User Details</h4>
-      <hr />
-    </div>
-
     <ng-container *ngIf="serviceError">
       <div class="alert alert-danger">{{serviceError}}</div>
     </ng-container>

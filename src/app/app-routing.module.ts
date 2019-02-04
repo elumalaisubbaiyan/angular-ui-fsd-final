@@ -3,12 +3,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { TasksListComponent } from './tasks-list/tasks-list.component';
 import { AddTaskComponent } from './add-task/add-task.component';
 import { UsersComponent } from './users/users.component';
+import { ProjectsComponent } from './projects/projects.component';
 
 const routes:  Routes = [
   {
     path: '',
     redirectTo: '/tasks',
     pathMatch: 'full'
+  },
+  {
+    path: 'projects',
+    component: ProjectsComponent,
+    data: { title: 'Manage Project ' }
   },
   {
     path: 'tasks',

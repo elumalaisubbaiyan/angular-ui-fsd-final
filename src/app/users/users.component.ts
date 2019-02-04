@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, Validators } from '@angular/forms';
 import { User } from './user';
-import { windowWhen } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users',
@@ -28,7 +27,6 @@ export class UsersComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UsersApiServiceService,
     private route: ActivatedRoute,
-    private router: Router,
     private spinner: NgxSpinnerService) { }
 
   ngOnInit() {

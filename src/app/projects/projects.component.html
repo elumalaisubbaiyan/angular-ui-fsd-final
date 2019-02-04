@@ -1,0 +1,128 @@
+<ngx-spinner></ngx-spinner>
+<div class="container">
+  <br />
+  <div *ngIf="!loaded">Data loading. Please wait</div>
+  <div *ngIf="loaded">
+    <div *ngIf="editMode">
+      <h4 class="text-success">Update Project Details</h4>
+      <hr />
+    </div>
+
+    <ng-container *ngIf="serviceError">
+      <div class="alert alert-danger">{{serviceError}}</div>
+    </ng-container>
+
+    <form [formGroup]="projectForm">
+      <div class="row">
+        <input type="hidden" class="form-control" formControlName="projectId">
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-md-2 col-lg-1"><label for="">Project:</label></div>
+        <div class="col-sm-6 col-md-8 col-lg-5"><input type="text" class="form-control" formControlName="projectName"></div>
+      </div>
+      <div class="row">
+        <div class="col-sm-8 col-md-8 col-lg-6">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="setDates" formControlName="setDates" (change)="toggleDates($event)">
+            Set Start and End Date
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-md-5 col-lg-4 set-date-label">
+          <input type="date" placeHolder="Start Date" class="form-control" disbled formControlName="startDate">
+        </div>
+        <div class="col-sm-6 col-md-5 col-lg-4 set-date-label">
+          <input type="date" placeHolder="End Date" class="form-control" disbled formControlName="endDate">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3 col-md-2 col-lg-1"><label for="">Priority:</label></div>
+        <div class="col-sm-9 col-md-8 col-lg-5">
+          <ng5-slider [(value)]="value" [options]="options" formControlName="priority"></ng5-slider>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 col-md-2 col-lg-1"><label for="">Manager:</label></div>
+        <div class="col-sm-6 col-md-8 col-lg-3"><input type="text" class="form-control" readonly formControlName="managerName"></div>
+        <div class="col-sm-6 col-md-8 col-lg-3"> <button class="project-form-button" (click)="openFormModal()">Select</button></div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3 col-md-2 col-lg-3"></div>
+        <div class="col-sm-9 col-md-8 col-lg-5">
+          <ng-container *ngIf="!editMode && !viewMode">
+            <input type="submit" value="Add" class="form-button user-form-button" (click)="onSubmit()"> &nbsp;
+            &nbsp; <button class="form-button user-form-button" (click)="clearFields()">Reset</button>
+          </ng-container>
+          <ng-container *ngIf="editMode">
+            <input type="submit" value="Update" class="form-button user-form-button" (click)="onSubmit()"> &nbsp;
+            &nbsp; <button class="form-button user-form-button" (click)="clearFields()">Cancel</button>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+    <hr class="detail-seperator" />
+
+    <ng-container *ngIf="projectsList && projectsList.length > 0 ">
+      <div class="row form-group">
+        <div class="col-lg-5 col-sm-5"><input type="text" [(ngModel)]="searchText" placeholder="Search" class="form-control"></div>
+      </div>
+
+      <div class="row form-group">
+        <label for="sort" class="col-sm-2 col-lg-2 control-label"> Sort By: </label>
+        <div class="col-lg-3 col-sm-3">
+          <select [(ngModel)]="sortBy" class="form-control">
+            <option value="startDate">Start Date</option>
+            <option value="endDate">End Date</option>
+            <option value="priority">Priority</option>
+            <option value="completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="list-group" *ngFor="let project of projectsList  
+                  | grdFilter:  {projectName: searchText} 
+                  | sort: sortBy">
+        <hr class="detail-seperator dotted-line" />
+
+        <table class="small-table">
+          <tr class="bg-secondary">
+            <td class="no-border-spacing">Project:</td>
+            <td colspan="3">{{project.projectName}}</td>
+            <td class="bg-white add-border-spacing">Priority</td>
+            <td class="bg-white" rowspan="2"><input type="button" class="project-form-button" (click)="onEdit(project)"
+                value="Update" /></td>
+          </tr>
+          <tr class="bg-secondary">
+            <td colspan="4"></td>
+          </tr>
+          <tr class="bg-secondary">
+            <td>No.Of.Tasks:</td>
+            <td>{{project.totalTasks}}</td>
+            <td>Completed:</td>
+            <td>{{project.status}}</td>
+            <td rowspan="3" class="add-border-spacing">{{project.priority}}</td>
+            <td class="bg-white" rowspan="2"><input type="button" class="project-form-button" (click)="onDelete(project)"
+                value="Suspend" /></td>
+          </tr>
+          <tr class="bg-secondary">
+            <td>Start Date:</td>
+            <td>{{project.startDate | date: 'MM/dd/yyyy'}}</td>
+            <td>End Date:</td>
+            <td>{{project.endDate | date: 'MM/dd/yyyy'}}</td>
+          </tr>
+        </table>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="
+        !projectsList || projectsList.length <=0 ">
+      <h4 class=" text-danger">No Projects available </h4>
+    </ng-container>
+  </div>
+</div>
