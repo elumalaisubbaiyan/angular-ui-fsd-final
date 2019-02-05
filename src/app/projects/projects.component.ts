@@ -112,18 +112,19 @@ export class ProjectsComponent implements OnInit {
     let setDates = false;
     if (data.startDate && data.endDate) {
       this.projectForm.controls['startDate'].enable();
-      //this.projectForm.controls['startDate'].setValue(data.startDate);
       this.projectForm.controls['endDate'].enable();
-      //this.projectForm.controls['endDate'].setValue(data.endDate);
       setDates = true;
+      this.cd.detectChanges();
     }
     this.projectForm = this.fb.group({
       projectId: [data.projectId],
       projectName: [data.projectName, [Validators.required]],
       priority: [data.priority],
       setDates: setDates,
-      startDate: [data.startDate, [Validators.required]],
-      endDate: [data.startDate, [Validators.required]],
+      startDate: [setDates && data.startDate, [Validators.required]],
+      endDate: [setDates && data.endDate, [Validators.required]],
+      managerId: [data.managerId],
+      managerName: [data.manager && data.manager.firstName]
     });
   }
 
@@ -173,8 +174,6 @@ export class ProjectsComponent implements OnInit {
       if (this.editMode) {
         this.projectService.updateProject(projectObj.projectId, projectObj).subscribe(
           (data) => {
-            //this.prettyPrint(JSON.stringify(data));
-            this.serviceError = '';
             window.location.reload();
             this.spinner.hide();
           },
@@ -222,10 +221,10 @@ export class ProjectsComponent implements OnInit {
       projectObj.startDate = projectFormData.startDate;
       projectObj.endDate = projectFormData.endDate;
     }
-    if(projectFormData.priority && projectFormData.priority > 0) {
+    if (projectFormData.priority && projectFormData.priority > 0) {
       projectObj.priority = projectFormData.priority;
     }
-    if(projectFormData.managerId) {
+    if (projectFormData.managerId && projectFormData.managerId != 0) {
       projectObj.managerId = projectFormData.managerId;
     }
     console.log("projectObj " + JSON.stringify(projectObj));

@@ -21,7 +21,6 @@ export class UserFormModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private userService: UsersApiServiceService,
     private spinner: NgxSpinnerService) {
-
   }
 
   ngOnInit() {
