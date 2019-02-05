@@ -7,6 +7,7 @@ import { Project } from './project';
 import { Options } from 'ng5-slider';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserFormModalComponent } from '../modal/user-form-modal/user-form-modal.component';
+import { DateValidator } from '../validators/DateValidator';
 
 @Component({
   selector: 'app-projects',
@@ -92,13 +93,17 @@ export class ProjectsComponent implements OnInit {
     this.projectForm = this.fb.group({
       projectId: [],
       projectName: ['', Validators.required],
-      priority: [5,],
+      priority: [0,],
       startDate: [{ value: '', disabled: true }, [Validators.required]],
       endDate: [{ value: '', disabled: true }, [Validators.required]],
       managerId: [''],
       managerName: [''],
       setDates: false
-    });
+    }, {
+        validator: Validators.compose([
+          DateValidator.dateLessThan('endDate', 'startDate', { 'enddate': true })])
+      }
+    );
     this.cd.detectChanges();
     this.projectForm.controls['startDate'].disable();
     this.projectForm.controls['endDate'].disable();
@@ -124,7 +129,7 @@ export class ProjectsComponent implements OnInit {
       startDate: [setDates && data.startDate, [Validators.required]],
       endDate: [setDates && data.endDate, [Validators.required]],
       managerId: [data.managerId],
-      managerName: [data.manager && data.manager.firstName]
+      managerName: [data.manager && (data.manager.firstName + " " + data.manager.lastName)]
     });
   }
 
@@ -168,7 +173,9 @@ export class ProjectsComponent implements OnInit {
 
   onSubmit() {
     this.spinner.show();
-    if (this.projectForm.valid) {
+
+
+    if (this.projectForm.valid && !this.projectForm.hasError('enddate')) {
       this.serviceResponse = '';
       let projectObj = this.getSubmittedFormData();
       if (this.editMode) {
@@ -196,6 +203,11 @@ export class ProjectsComponent implements OnInit {
           });
       }
     } else {
+      this.spinner.hide();
+      if (this.projectForm.hasError('enddate')) {
+        alert("End date cannot be less than start date" + '\n');
+        return;
+      }
       const invalid = [];
       const controls = this.projectForm.controls;
       for (const name in controls) {
@@ -203,7 +215,6 @@ export class ProjectsComponent implements OnInit {
           invalid.push(name + '\n');
         }
       }
-      this.spinner.hide();
       alert("Form values are invalid. Please verify the below field values " + '\n' + invalid);
       return invalid;
     }
