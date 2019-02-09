@@ -19,6 +19,8 @@ import { ProjectsComponent } from './projects/projects.component';
 import { SimpleSliderComponent } from './slider/simple-slider/simple-slider.component';
 import { Ng5SliderModule } from 'ng5-slider';
 import { UserFormModalComponent } from './modal/user-form-modal/user-form-modal.component';
+import { ProjectFormModalComponent } from './modal/project-form-modal/project-form-modal/project-form-modal.component';
+import { TaskFormModalComponent } from './modal/task-form-modal/task-form-modal/task-form-modal.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { UserFormModalComponent } from './modal/user-form-modal/user-form-modal.
     ArraySortPipe,
     ProjectsComponent,
     SimpleSliderComponent,
-    UserFormModalComponent
+    UserFormModalComponent,
+    ProjectFormModalComponent,
+    TaskFormModalComponent
   ],
   imports: [
     HttpClientModule,
@@ -46,7 +50,9 @@ import { UserFormModalComponent } from './modal/user-form-modal/user-form-modal.
     ReactiveFormsModule
   ],
   entryComponents: [
-    UserFormModalComponent
+    UserFormModalComponent,
+    ProjectFormModalComponent,
+    TaskFormModalComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

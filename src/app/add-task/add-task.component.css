@@ -1,0 +1,17 @@
+.col-lg-2 {
+    max-width: 12.33%;
+}
+
+.row label {
+    font-size: 16px;
+}
+
+.col-lg-3 {
+    max-width: 21%; 
+}
+
+@media only screen and (min-width: 721px) {
+    .end-date {
+        max-width: 9%;
+    }
+}

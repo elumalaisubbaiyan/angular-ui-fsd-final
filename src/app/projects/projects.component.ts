@@ -42,7 +42,8 @@ export class ProjectsComponent implements OnInit {
 
   openFormModal() {
     const modalRef = this.modalService.open(UserFormModalComponent);
-
+    modalRef.componentInstance.modalType = 'users';
+    
     modalRef.result.then((result) => {
       if (result && result.userId) {
         this.projectForm.controls['managerId'].setValue(result.userId);
@@ -66,20 +67,15 @@ export class ProjectsComponent implements OnInit {
     this.initializeForm();
   }
 
-  toDateInputValue(date: Date) {
-    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-    return date.toJSON().slice(0, 10);
-  };
-
   toggleDates(e) {
     if (e.target.checked) {
       this.cd.detectChanges();
       this.projectForm.controls['startDate'].enable();
-      this.projectForm.controls['startDate'].setValue(this.toDateInputValue(new Date()));
+      this.projectForm.controls['startDate'].setValue(DateValidator.toDateInputValue(new Date()));
       this.projectForm.controls['endDate'].enable();
       var tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      this.projectForm.controls['endDate'].setValue(this.toDateInputValue(tomorrow));
+      this.projectForm.controls['endDate'].setValue(DateValidator.toDateInputValue(tomorrow));
       this.cd.detectChanges();
     } else {
       this.projectForm.controls['startDate'].disable();
@@ -130,7 +126,11 @@ export class ProjectsComponent implements OnInit {
       endDate: [setDates && data.endDate, [Validators.required]],
       managerId: [data.managerId],
       managerName: [data.manager && (data.manager.firstName + " " + data.manager.lastName)]
-    });
+    }, {
+        validator: Validators.compose([
+          DateValidator.dateLessThan('endDate', 'startDate', { 'enddate': true })])
+      }
+    );
   }
 
   populateProjects() {
@@ -173,7 +173,6 @@ export class ProjectsComponent implements OnInit {
 
   onSubmit() {
     this.spinner.show();
-
 
     if (this.projectForm.valid && !this.projectForm.hasError('enddate')) {
       this.serviceResponse = '';

@@ -22,6 +22,12 @@ export class TasksApiService {
     return this.http.get<Task[]>(apiUrl);
   }
 
+  getParentTasks(): Observable<Task[]> {
+    const parentTasksUrl = apiUrl + "/parents";
+    return this.http.get<Task[]>(parentTasksUrl);
+  }
+
+
   getTaskById(id: number): Observable<Task> {
     const getByIdUrl = `${apiUrl}/${id}`;
     return this.http.get<Task>(getByIdUrl);
@@ -32,17 +38,6 @@ export class TasksApiService {
       catchError(this.handleError('addTask')),
       tap(data => console.log("response data for addtask: ", data))
     );
-
-    /*
-    try {
-      const output = this.http.post<string>(apiUrl, task, httpOptions);
-      console.log('output ' + JSON.stringify(output));
-      return output;
-    } catch (err) {
-      console.error('Error occured while posting data ' + err);
-      this.handleError('addTask');
-    }
-    */
   }
 
   updateTask(id: number, task: Task): Observable<Task> {
@@ -63,7 +58,7 @@ export class TasksApiService {
       //this.spinner.hide();
       // Let the app keep running by returning an empty result.
       //return of(result as string);   
-      throw new Error("Error occured performing operation ") ;
+      throw new Error("Error occured performing operation ");
     };
   }
 

@@ -7,9 +7,9 @@
   </div>
 
   <div *ngIf="viewMode">
-      <h4 class="text-success">View Task Details</h4>
-      <hr/>
-    </div>
+    <h4 class="text-success">View Task Details</h4>
+    <hr />
+  </div>
 
   <ng-container *ngIf="addTaskError">
     <div class="alert alert-danger">{{addTaskError}}</div>
@@ -20,45 +20,51 @@
     <div class="row">
       <input type="hidden" class="form-control" formControlName="taskId">
     </div>
+
     <div class="row">
-      <div class="col-lg-2 col-sm-6"><label for="">Task:</label></div>
-      <div class="col-lg-4 col-sm-6"><input type="text" class="form-control" formControlName="task"></div>
+      <div class="col-sm-6 col-md-4 col-lg-2"><label for="">Project:</label></div>
+      <div class="col-sm-6 col-md-8 col-lg-4"><input type="text" readonly formControlName="projectName" class="form-control"></div>
+      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" (click)="openProjectFormModal()">Select</button></div>
     </div>
 
-
     <div class="row">
-      <div class="col-lg-2 col-sm-6"><label for="">Priority:</label></div>
-      <div class="col-lg-4 col-sm-6"><input type="range" min=0 max=30 class="slider" id="priorityInput" oninput="priorityOuput.value = priorityInput.value"
-          formControlName="priority" />
-        <b> Selected Priority: <output name="priorityOuput" id="priorityOuput">
-            {{priority}}
-          </output></b>
+      <div class="col-sm-6 col-md-4 col-lg-2"><label for="">Task:</label></div>
+      <div class="col-sm-6 col-md-8 col-lg-6"><input type="text" class="form-control" formControlName="task"></div>
+    </div>
+
+    <div class="row" style="margin-bottom: 0px;">
+      <div class="col-sm-6 col-md-4 col-lg-2"><label for=""></label></div>
+      <div class="col-sm-8 col-md-8 col-lg-6">
+        <div class="form-check">
+          <input type="checkbox" [checked]="isParentTask" class="form-check-input" id="isParentTask" (change)="toggleTaskFields($event)">
+          Parent Task
+        </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="col-lg-2 col-sm-6"><label for="">Parent Task:</label></div>
-      <div class="col-lg-4 col-sm-6">
-        <ng-container *ngIf="tasksList && tasksList.length > 0">
-          <select formControlName="parentTask" class="form-control">
-            <option value="0">No Parent Task</option>
-            <option value="-1">Use the New Task as Parent Task</option>
-            <option *ngFor="let task of tasksList" [selected]="task.taskId === parentTask" [value]="task.taskId">{{taskForm.parentTask}}
-              {{task.taskId}} - {{task.task}}</option>
-          </select>
-        </ng-container>
-
-
-        <!-- <input type="text" class="form-control" maxlength="8" size="4" formControlName="parentTask">-->
+      <div class="col-sm-3 col-md-2 col-lg-2"><label for="">Priority:</label></div>
+      <div class="col-sm-9 col-md-8 col-lg-6">
+        <ng5-slider [(value)]="value" [options]="options" formControlName="priority"></ng5-slider>
       </div>
     </div>
+
     <div class="row">
-      <div class="col-lg-2 col-sm-6"><label for="">Start Date:</label></div>
-      <div class="col-lg-4 col-sm-6"><input type="date" class="form-control" formControlName="startDate"></div>
+      <div class="col-sm-3 col-md-2 col-lg-2"><label for="">Parent Task:</label></div>
+      <div class="col-sm-6 col-md-8 col-lg-4"><input type="text" readonly class="form-control" formControlName="parentTask"></div>
+      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" [disabled]="isParentTask" (click)="openParentTaskFormModal()">Select</button></div>
     </div>
     <div class="row">
-      <div class="col-lg-2 col-sm-6"><label for="">End Date:</label></div>
-      <div class="col-lg-4 col-sm-6"><input type="date" class="form-control" formControlName="endDate"></div>
+      <div class="col-sm-3 col-md-2 col-lg-2"><label for="">Start Date:</label></div>
+      <div class="col-sm-3 col-md-2 col-lg-3"><input type="date" class="form-control" formControlName="startDate"></div>
+      <div class="col-sm-3 col-md-2 col-lg-2 end-date"><label for="">End Date:</label></div>
+      <div class="col-sm-3 col-md-2 col-lg-3"><input type="date" class="form-control" formControlName="endDate"></div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3 col-md-2 col-lg-2"><label for="">User:</label></div>
+      <div class="col-sm-6 col-md-8 col-lg-4"><input type="text" readonly class="form-control" formControlName="userName"></div>
+      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" [disabled]="isParentTask" (click)="openUserFormModal()">Select</button></div>
     </div>
 
     <div class="row">
@@ -69,8 +75,8 @@
           &nbsp; <button class="form-button" (click)="clearFields()">Reset</button>
         </ng-container>
         <ng-container *ngIf="viewMode">
-            &nbsp; <button class="form-button" (click)="onCancel()">Go Back</button>
-          </ng-container>
+          &nbsp; <button class="form-button" (click)="onCancel()">Go Back</button>
+        </ng-container>
         <ng-container *ngIf="editMode">
           <input type="submit" value="Update" class="form-button" (click)="onSubmit()"> &nbsp;
           &nbsp; <button class="form-button" (click)="onCancel()">Cancel</button>
