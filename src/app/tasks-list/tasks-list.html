@@ -1,15 +1,12 @@
 <ngx-spinner></ngx-spinner>
+<ng-container *ngIf="tasksList && tasksList.length > 0 ">
 
-
-  <form [formGroup]="taskForm">
-    <div class="row">
-      <div class="col-sm-6 col-md-4 col-lg-2"><label for="">Project:</label></div>
-      <div class="col-sm-6 col-md-8 col-lg-4"><input type="text" readonly formControlName="projectName" class="form-control"></div>
-      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" (click)="openProjectFormModal()">Select</button></div>
-    </div>
-
-  </form>
-
+  <div class="row">
+    <div class="col-lg-1 col-sm-3"><label for="">Task:</label></div>
+    <div class="col-lg-5 col-sm-3"><input type="text" [(ngModel)]="searchTask" class="form-control"></div>
+    <div class="col-lg-1 col-sm-3"><label for="">Parent Task:</label></div>
+    <div class="col-lg-5 col-sm-3"><input type="text" [(ngModel)]="searchParentTask" class="form-control"></div>
+  </div>
   <div class="row">
 
     <div class="" style="padding-left:15px;"><label for="">Priority From:</label></div>
@@ -25,8 +22,6 @@
   </div>
   <hr style="border-bottom: 1px dotted grey" />
   <p></p>
-
-  <ng-container *ngIf="tasksList && tasksList.length > 0 ">
   <table id="dtBasicExample" class="table task-list">
     <thead class="">
       <th>Task</th>

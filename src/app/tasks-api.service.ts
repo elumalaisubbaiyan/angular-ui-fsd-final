@@ -22,6 +22,11 @@ export class TasksApiService {
     return this.http.get<Task[]>(apiUrl);
   }
 
+  getAllTasksByProject(projectId: number): Observable<Task[]> {
+    const tasksByProjectUrl = `${apiUrl}/projects/${projectId}`;
+    return this.http.get<Task[]>(tasksByProjectUrl);
+  }
+
   getParentTasks(): Observable<Task[]> {
     const parentTasksUrl = apiUrl + "/parents";
     return this.http.get<Task[]>(parentTasksUrl);

@@ -3,6 +3,9 @@ import { Task } from '../task';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TasksApiService } from '../tasks-api.service';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ProjectFormModalComponent } from '../modal/project-form-modal/project-form-modal/project-form-modal.component';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-tasks-list',
@@ -10,6 +13,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./tasks-list.component.css']
 })
 export class TasksListComponent implements OnInit {
+  taskForm;
   public searchTask: string;
   public searchParentTask: string;
   public searchPriorityFrom: number;
@@ -19,12 +23,18 @@ export class TasksListComponent implements OnInit {
 
   constructor(
     private taskService: TasksApiService,
+    private fb: FormBuilder,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService,
+    private modalService: NgbModal) { }
 
   ngOnInit() {
     this.spinner.show();
+    this.taskForm = this.taskForm = this.fb.group({
+      projectName: ['']
+    });
+
     this.taskService.getAllTasks().subscribe(
       data => {
         this.tasksList = data;
@@ -57,6 +67,32 @@ export class TasksListComponent implements OnInit {
       });
     this.taskService.updateTask(task.taskId, task);
 
+  }
+
+  openProjectFormModal() {
+    const modalRef = this.modalService.open(ProjectFormModalComponent);
+
+    modalRef.result.then((result) => {
+      if (result && result.projectId) {
+        //this.taskForm.controls['projectId'].setValue(result.projectId);
+        this.taskForm.controls['projectName'].setValue(result.projectName);
+        this.spinner.show();
+        this.taskService.getAllTasksByProject(result.projectId).subscribe(
+          data => {
+            this.tasksList = data;
+            this.spinner.hide();
+          },
+          err => {
+            console.error(`Error occured while getting tasks data ${err}`);
+            this.tasksList = [];
+            this.spinner.hide();
+          }
+        );
+      }
+
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
 }
