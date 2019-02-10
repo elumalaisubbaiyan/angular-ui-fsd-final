@@ -1,32 +1,47 @@
 <ngx-spinner></ngx-spinner>
 
 
-  <form [formGroup]="taskForm">
-    <div class="row">
-      <div class="col-sm-6 col-md-4 col-lg-2"><label for="">Project:</label></div>
-      <div class="col-sm-6 col-md-8 col-lg-4"><input type="text" readonly formControlName="projectName" class="form-control"></div>
-      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" (click)="openProjectFormModal()">Select</button></div>
-    </div>
-
-  </form>
-
+<form [formGroup]="taskForm">
   <div class="row">
-
-    <div class="" style="padding-left:15px;"><label for="">Priority From:</label></div>
-    <div class="col-lg-1 col-sm-3"><input style="width:100px;" type="text" [(ngModel)]="startPriority" class="form-control"></div>
-    <div class=""><label for="" style="margin-left:60px;">Priority To:</label></div>
-    <div class="col-lg-1 col-sm-3"><input style="width:100px;" value="" type="text" [(ngModel)]="endPriority" class="form-control"></div>
-
-    <div class="col-lg-1 col-sm-3" style="margin-left:50px;"><label for="">Start:</label></div>
-    <div class="col-lg-2 col-sm-3"><input type="text" [(ngModel)]="startDate" class="form-control"></div>
-    <div class="col-lg-1 col-sm-3"><label for="">End:</label></div>
-    <div class="col-lg-2 col-sm-3"><input type="text" [(ngModel)]="endDate" class="form-control"></div>
-
+    <div class="col-sm-2 col-md-4 col-lg-1"><label for="">Project:</label></div>
+    <div class="col-sm-5 col-md-8 col-lg-4"><input type="text" readonly formControlName="projectName" class="form-control"></div>
+    <div class="col-sm-4 col-md-8 col-lg-2"> <button class="user-form-button" (click)="openProjectFormModal()">Select</button></div>
   </div>
-  <hr style="border-bottom: 1px dotted grey" />
-  <p></p>
+</form>
 
-  <ng-container *ngIf="tasksList && tasksList.length > 0 ">
+<div class="row">
+  <label for="sort" class="col-sm-2 col-lg-2"> Sort Task By: </label>
+  <div class="col-lg-2 col-sm-3">
+    <select [(ngModel)]="sortBy" class="form-control">
+      <option value="startDate">Start Date</option>
+      <option value="endDate">End Date</option>
+      <option value="priority">Priority</option>
+      <option value="completed">Completed</option>
+    </select>
+  </div>
+</div>
+
+<div class="row form-group">
+
+</div>
+
+<div class="row">
+
+  <div class="" style="padding-left:15px;"><label for="">Priority From:</label></div>
+  <div class="col-lg-1 col-sm-3"><input style="width:100px;" type="text" [(ngModel)]="startPriority" class="form-control"></div>
+  <div class=""><label for="" style="margin-left:60px;">Priority To:</label></div>
+  <div class="col-lg-1 col-sm-3"><input style="width:100px;" value="" type="text" [(ngModel)]="endPriority" class="form-control"></div>
+
+  <div class="col-lg-1 col-sm-3" style="margin-left:50px;"><label for="">Start:</label></div>
+  <div class="col-lg-2 col-sm-3"><input type="text" [(ngModel)]="startDate" class="form-control"></div>
+  <div class="col-lg-1 col-sm-3"><label for="">End:</label></div>
+  <div class="col-lg-2 col-sm-3"><input type="text" [(ngModel)]="endDate" class="form-control"></div>
+
+</div>
+<hr style="border-bottom: 1px dotted grey" />
+<p></p>
+
+<ng-container *ngIf="tasksList && tasksList.length > 0 ">
   <table id="dtBasicExample" class="table task-list">
     <thead class="">
       <th>Task</th>
@@ -38,9 +53,7 @@
       <th></th>
     </thead>
     <tbody>
-      <tr *ngFor="let task of tasksList  | grdFilter: {task: searchTask} 
-          | grdFilter: {parentTask: searchParentTask} 
-          | priorityFilter : startPriority : endPriority
+      <tr *ngFor="let task of tasksList  | sort: sortBy          
           | paginate: { itemsPerPage: 5, currentPage: p }">
         <td class="task-name">{{ task.task }}</td>
         <td class="task-name">{{ task.parentTask}}</td>

@@ -80,7 +80,7 @@
             <option value="startDate">Start Date</option>
             <option value="endDate">End Date</option>
             <option value="priority">Priority</option>
-            <option value="completed">Completed</option>
+            <option value="completedTasks">Completed</option>
           </select>
         </div>
       </div>
@@ -103,9 +103,9 @@
           </tr>
           <tr class="bg-secondary">
             <td>No.Of.Tasks:</td>
-            <td>{{project.totalTasks}}</td>
+            <td>{{project.numberOfTasks}}</td>
             <td>Completed:</td>
-            <td>{{project.status}}</td>
+            <td>{{project.completedTasks}}</td>
             <td rowspan="3" class="add-border-spacing">{{project.priority}}</td>
             <td class="bg-white" rowspan="2"><input type="button" class="project-form-button" (click)="onDelete(project)"
                 value="Suspend" /></td>

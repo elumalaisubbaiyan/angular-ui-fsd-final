@@ -18,6 +18,7 @@ export class TasksListComponent implements OnInit {
   public searchParentTask: string;
   public searchPriorityFrom: number;
   public searchPriorityTo: number;
+  sortBy: string;
 
   tasksList: Task[] = [];
 
