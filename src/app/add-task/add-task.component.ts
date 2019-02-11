@@ -205,6 +205,7 @@ export class AddTaskComponent implements OnInit {
     this.priority = data.priority;
     if (this.viewMode) {
       this.cd.detectChanges();
+      this.options = Object.assign({}, this.options, { disabled: true });
       this.taskForm.disable();
       this.cd.detectChanges();
     }

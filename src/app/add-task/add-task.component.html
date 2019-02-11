@@ -24,7 +24,7 @@
     <div class="row">
       <div class="col-sm-6 col-md-4 col-lg-2"><label for="">Project:</label></div>
       <div class="col-sm-6 col-md-8 col-lg-4"><input type="text" readonly formControlName="projectName" class="form-control"></div>
-      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" (click)="openProjectFormModal()">Select</button></div>
+      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" [disabled]="viewMode" (click)="openProjectFormModal()">Select</button></div>
     </div>
 
     <div class="row">
@@ -52,7 +52,7 @@
     <div class="row">
       <div class="col-sm-3 col-md-2 col-lg-2"><label for="">Parent Task:</label></div>
       <div class="col-sm-6 col-md-8 col-lg-4"><input type="text" readonly class="form-control" formControlName="parentTask"></div>
-      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" [disabled]="isParentTask" (click)="openParentTaskFormModal()">Select</button></div>
+      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" [disabled]="isParentTask || viewMode" (click)="openParentTaskFormModal()">Select</button></div>
     </div>
     <div class="row">
       <div class="col-sm-3 col-md-2 col-lg-2"><label for="">Start Date:</label></div>
@@ -64,7 +64,7 @@
     <div class="row">
       <div class="col-sm-3 col-md-2 col-lg-2"><label for="">User:</label></div>
       <div class="col-sm-6 col-md-8 col-lg-4"><input type="text" readonly class="form-control" formControlName="userName"></div>
-      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" [disabled]="isParentTask" (click)="openUserFormModal()">Select</button></div>
+      <div class="col-sm-6 col-md-8 col-lg-2"> <button class="user-form-button" [disabled]="isParentTask || viewMode" (click)="openUserFormModal()">Select</button></div>
     </div>
 
     <div class="row">
