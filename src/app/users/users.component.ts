@@ -83,7 +83,9 @@ export class UsersComponent implements OnInit {
       },
       err => {
         console.error(`Error occured while getting users data ${err}`);
-        this.loadError = 'Error occured while getting users data  ';
+        if (err.status != 404) {
+          this.loadError = 'Error occured while getting users data  ';
+        }
         this.spinner.hide();
         this.loaded = true;
       }

@@ -44,7 +44,7 @@ export class ProjectsComponent implements OnInit {
   openFormModal() {
     const modalRef = this.modalService.open(UserFormModalComponent);
     modalRef.componentInstance.modalType = 'users';
-    
+
     modalRef.result.then((result) => {
       if (result && result.userId) {
         this.projectForm.controls['managerId'].setValue(result.userId);
@@ -144,7 +144,9 @@ export class ProjectsComponent implements OnInit {
       },
       err => {
         console.error(`Error occured while getting projects data ${err}`);
-        this.loadError = 'Error occured while getting projects data';
+        if (err.status != 404) {
+          this.loadError = 'Error occured while getting projects data';
+        }
         this.spinner.hide();
         this.loaded = true;
       }

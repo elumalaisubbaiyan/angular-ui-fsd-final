@@ -45,7 +45,9 @@ export class TasksListComponent implements OnInit {
       },
       err => {
         console.error(`Error occured while getting tasks data ${err}`);
-        this.loadError = 'Error occured while getting tasks data';
+        if (err.status != 404) {
+          this.loadError = 'Error occured while getting tasks data';
+        }
         this.spinner.hide();
       }
     );
