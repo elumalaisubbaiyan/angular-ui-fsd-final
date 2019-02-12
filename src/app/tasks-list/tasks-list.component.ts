@@ -19,6 +19,7 @@ export class TasksListComponent implements OnInit {
   public searchPriorityFrom: number;
   public searchPriorityTo: number;
   sortBy: string;
+  loadError;
 
   tasksList: Task[] = [];
 
@@ -40,9 +41,11 @@ export class TasksListComponent implements OnInit {
       data => {
         this.tasksList = data;
         this.spinner.hide();
+        this.loadError = '';
       },
       err => {
         console.error(`Error occured while getting tasks data ${err}`);
+        this.loadError = 'Error occured while getting tasks data';
         this.spinner.hide();
       }
     );

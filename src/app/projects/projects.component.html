@@ -120,9 +120,11 @@
       </div>
     </ng-container>
 
-    <ng-container *ngIf="
-        !projectsList || projectsList.length <=0 ">
+    <ng-container *ngIf="(!projectsList || projectsList.length <=0) && !loadError">
       <h4 class=" text-danger">No Projects available </h4>
+    </ng-container>
+    <ng-container *ngIf="loadError">
+      <h4 class=" text-danger">{{loadError}}</h4>
     </ng-container>
   </div>
 </div>

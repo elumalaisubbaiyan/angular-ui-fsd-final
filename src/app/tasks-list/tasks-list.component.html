@@ -76,8 +76,11 @@
   <pagination-controls (pageChange)="p = $event"></pagination-controls>
 </ng-container>
 
-<ng-container *ngIf="!tasksList || tasksList.length == 0 ">
+<ng-container *ngIf="(!tasksList || tasksList.length == 0) && !loadError">
   <div class="row">
     <h3 class="text-danger">No records are available.</h3>
   </div>
+</ng-container>
+<ng-container *ngIf="loadError">
+  <h4 class=" text-danger">{{loadError}} </h4>
 </ng-container>

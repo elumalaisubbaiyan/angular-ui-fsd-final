@@ -21,6 +21,7 @@ export class ProjectsComponent implements OnInit {
   serviceResponse;
   serviceError;
   projectsList;
+  loadError;
   editMode: boolean;
   viewMode: boolean;
   public searchText: string;
@@ -139,12 +140,11 @@ export class ProjectsComponent implements OnInit {
         this.projectsList = data;
         this.spinner.hide();
         this.loaded = true;
+        this.loadError = '';
       },
       err => {
         console.error(`Error occured while getting projects data ${err}`);
-        this.projectsList = [
-          { "projectId": 1, "projectName": "Test Project", "startDate": "2019-01-01", "endDate": "2019-02-01" },
-          { "projectId": 2, "projectName": "Test Project 2", "startDate": "2019-01-01", "endDate": "2019-02-01" }];
+        this.loadError = 'Error occured while getting projects data';
         this.spinner.hide();
         this.loaded = true;
       }

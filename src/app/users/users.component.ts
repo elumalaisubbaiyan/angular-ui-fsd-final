@@ -14,6 +14,7 @@ export class UsersComponent implements OnInit {
 
   userForm;
   loaded;
+  loadError;
   serviceResponse;
   serviceError;
   usersList;
@@ -78,9 +79,11 @@ export class UsersComponent implements OnInit {
         this.usersList = data;
         this.spinner.hide();
         this.loaded = true;
+        this.loadError = '';
       },
       err => {
         console.error(`Error occured while getting users data ${err}`);
+        this.loadError = 'Error occured while getting users data  ';
         this.spinner.hide();
         this.loaded = true;
       }
